@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     public float moveSpeed;
     public Vector2 moveInput;
+    Animator an;
 
     public Transform topLeft;
     public Transform bottomRight;
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        an = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -22,8 +24,13 @@ public class PlayerController : MonoBehaviour
     {
         moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         rb.velocity = moveInput * moveSpeed;
-
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, topLeft.position.x, bottomRight.position.x),
             Mathf.Clamp(transform.position.y, bottomRight.position.y, topLeft.position.y), transform.position.z);
+
+        an.SetFloat("Movement", rb.velocity.y);
+    }
+    public void Die()
+    {
+        Destroy(gameObject);
     }
 }
